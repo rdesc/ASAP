@@ -104,8 +104,8 @@ def get_nusc_val_token(nusc):
     for sample_token in sample_tokens_all:
         scene_token = nusc.get('sample', sample_token)['scene_token']
         scene_record = nusc.get('scene', scene_token)
-        if scene_record['name'] in val_scene_ids:
-            sample_val_tokens.append(sample_token)
+        #if scene_record['name'] in val_scene_ids:
+        sample_val_tokens.append(sample_token)
     print("total samples in val: {}".format(len(sample_val_tokens)))  # 6019
     return sample_val_tokens, val_scene_ids
 
@@ -276,9 +276,9 @@ def generate_sample_data(opts, nusc, val_scene_ids):
     for this_sample_data in tqdm(nusc.sample_data):
         if this_sample_data['is_key_frame'] is False:
             continue
-        this_scene_token = nusc.get('sample', this_sample_data['sample_token'])['scene_token']
-        if nusc.get('scene', this_scene_token)['name'] not in val_scene_ids:
-            continue
+        # this_scene_token = nusc.get('sample', this_sample_data['sample_token'])['scene_token']
+        # if nusc.get('scene', this_scene_token)['name'] not in val_scene_ids:
+        #     continue
         if nusc.get('sample', this_sample_data['sample_token'])['next'] == '':
             frame0 = copy.deepcopy(this_sample_data)
             frame0['prev'] = frame0['prev'] + str(hz_factor-1)
@@ -354,7 +354,7 @@ if __name__ == '__main__':
 
     # load 20Hz LiDAR inference results
     print('loading 20Hz LiDAR inference results...')
-    nusc_20Hz_rst = mmcv.load(opts.lidar_inf_rst_path)
+    # nusc_20Hz_rst = mmcv.load(opts.lidar_inf_rst_path)
 
     # generate sample list and sample_annotation list
     print('processing sample lists and annotation lists...')
